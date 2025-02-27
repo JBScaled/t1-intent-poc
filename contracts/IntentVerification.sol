@@ -22,7 +22,7 @@ contract IntentVerification {
     mapping(uint256 => Intent) public intents; // Mapping of intentId to Intent
 
     address public owner; // Contract owner (deploying address)
-    uint256 public claimTimeout = 1 * 60; // Time limit for Filler to complete
+    uint256 public claimTimeout = 5; // Time limit for Filler to complete
     uint256 public minDeposit = 0.005 ether; // Minimum deposit required to claim an intent. 
 
     /// @notice Events
