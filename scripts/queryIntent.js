@@ -18,7 +18,7 @@ async function main() {
         const intent = await IntentVerification.intents(intentId);
 
         // ✅ Check if intent exists
-        if (intent.amount === 0n) {
+        if (intent.creator) {
             console.log(`❌ No intent found with ID ${intentId}.`);
             process.exit(0);
         }
