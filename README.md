@@ -80,9 +80,17 @@ Create a `.env` file and configure:
 
 ```sh
 SEPOLIA_WSS_URL=wss://...
+SEPOLIA_URL=https://
 T1_URL=https://...
 WALLET_PRIVATE_KEY=your_private_key
 INTENT_CREATOR=0xYourAddress // Public key associated with the private key above
+
+// Intent configurations can be changed as needed
+INTENT_AMOUNT=0.001 //amount of ETH requested to be send to recipient
+INTENT_FEE=0.001 //additional fee paid to Filler as incentive
+FILLER_DEPOSIT=0.005 //min deposit requierd to claim an Intent
+INTENT_ID=0 //adjust to interact with the correct Intent with scripts
+EXPIRE_TIME=1 //time in seconds
 ```
 ## **🚀 Running the Project**
 
@@ -102,9 +110,10 @@ This automatically runs the following commands sequentially:
 1.  `npm run createIntent` - Creates an intent on t1.
 2.  `npm run queryIntent` - Queries the created intent.
 3.  `npm run claimIntent` - A filler claims the intent.
-4.  `npm run fulfillIntent` - The filler transfers funds on Sepolia.
-5.  `npm run queryIntent` - Queries the intent again to verify fulfillment.
-6.  `npm run claimPayment` - The filler claims their reward.
+4.  `npm run queryIntent` - Queries the created intent.
+5.  `npm run fulfillIntent` - The filler transfers funds on Sepolia.
+6.  `npm run queryIntent` - Queries the intent again to verify fulfillment.
+7.  `npm run claimPayment` - The filler claims their reward.
 
 ### **Run the Full Intent Expiration Flow**
 ***Note: Be sure to adjust the `INTENT_ID` in the `.env` when running this script multiple times on the same test contract.***
