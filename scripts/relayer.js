@@ -41,12 +41,23 @@ const T1_CONTRACT_ABI = [
 
 // ✅ Create WebSocket Provider with Auto-Reconnect
 const createWebSocketProvider = (url) => {
+    console.log(`🔄 Connecting to WebSocket: ${url}`);
+
     let provider = new ethers.WebSocketProvider(url);
 
-    provider._websocket.on("close", () => {
-        console.error("❌ WebSocket closed. Attempting to reconnect...");
-        setTimeout(() => {
-            provider = createWebSocketProvider(url);
+    provider.websocket.on("error", (error) => {
+        console.error("❌ WebSocket Error:", error);
+    });
+
+    provider.websocket.on("close", async (code) => {
+        console.warn(`⚠️ WebSocket closed with code ${code}. Reconnecting in 5 seconds...`);
+
+        setTimeout(async () => {
+            try {
+                provider = createWebSocketProvider(url);
+            } catch (error) {
+                console.error("❌ Failed to reconnect WebSocket:", error);
+            }
         }, 5000);
     });
 

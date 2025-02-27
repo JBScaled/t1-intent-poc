@@ -1,4 +1,4 @@
-const { spawn } = require("child_process");
+const { spawn, exec } = require("child_process");
 const path = require("path");
 const os = require("os");
 
@@ -8,11 +8,21 @@ const projectDir = path.resolve(__dirname, "..");
 console.log("🚀 Starting relayer in a new terminal...");
 
 // ✅ Cross-platform terminal command selection
-let terminalCommand;
 if (os.platform() === "darwin") {
     // macOS: Use Terminal with osascript
-    terminalCommand = `cd "${projectDir}" && npm run startRelayer`;
-    spawn("osascript", ["-e", `tell application "Terminal" to do script "${terminalCommand}"`]);
+    const terminalCommand = `cd ${projectDir} && npm run startRelayer`;
+
+    // ✅ Fix quote escaping for AppleScript
+    const appleScriptCommand = `osascript -e 'tell application "Terminal" to do script "cd '${projectDir}' && npm run startRelayer"'`;
+
+    // ✅ Execute the AppleScript command
+    exec(appleScriptCommand, (error, stdout, stderr) => {
+        if (error) {
+            console.error("❌ Failed to start relayer in a new terminal:", error);
+            return;
+        }
+        if (stderr) console.error("⚠️ STDERR:", stderr);
+    });
 } else if (os.platform() === "win32") {
     // Windows: Open Command Prompt
     spawn("cmd.exe", ["/c", `start cmd.exe /k "cd /d ${projectDir} && npm run startRelayer"`]);
