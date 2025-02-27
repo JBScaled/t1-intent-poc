@@ -1,0 +1,37 @@
+{
+  "name": "devrel_take_home",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "startRelayer": "node scripts/relayer.js",
+    "startRelayerDetached": "node scripts/startRelayerTerminal.js",
+    "deployContracts": "npm run deployIntentVerification && npm run deployMockSepolia && npm run startRelayerDetached",
+    "deployIntentVerification": "npx hardhat run scripts/deployIntentVerification.js --network t1",
+    "deployMockSepolia": "npx hardhat run scripts/deployMockSepoliaPayment.js --network sepolia",
+    "createIntent": "npx hardhat run scripts/createIntent.js --network t1",
+    "claimIntent": "npx hardhat run scripts/claimIntent.js --network t1",
+    "fulfillIntent": "npx hardhat run scripts/fulfillIntent.js --network sepolia",
+    "queryIntent": "npx hardhat run scripts/queryIntent.js --network t1",
+    "claimPayment": "npx hardhat run scripts/claimPayment.js --network t1",
+    "closeExpiredIntent": "npx hardhat run scripts/closeExpiredIntent.js --network t1",
+    "withdrawAndDisable": "npx hardhat run scripts/withdrawAndDisable.js --network t1",
+    "intentFulfillFlow": "npm run createIntent && npm run queryIntent && npm run claimIntent && npm run fulfillIntent && npm run queryIntent",
+    "intentClaimFlow": "npm run intentFulfillFlow && npm run claimPayment",
+    "intentExpireFlow": "npm run createIntent && npm run queryIntent && npm run claimIntent && npm run queryIntent && npm run closeExpiredIntent",
+    "testClaimPath": "npm run deployContracts && npm run intentClaimFlow",
+    "testExpirePath": "npm run deployContracts && npm run intentExpireFlow"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.18"
+  },
+  "dependencies": {
+    "chai": "^4.3.10",
+    "dotenv": "^16.4.7",
+    "ethers": "^6.13.5"
+  }
+}
